@@ -1,0 +1,55 @@
+code segment
+assume cs:code
+main proc far
+mov bx,0
+call dtb
+call huanhang
+call display
+call exit
+main endp
+dtb proc near
+mov cx,4
+lop:mov ah,1
+int 21h
+sub al,30h
+cbw
+xchg ax,bx
+mov dx,10
+mul dx
+xchg ax,bx
+add bx,ax
+loop lop
+ret
+dtb endp
+display proc near
+mov ax,0
+find:inc ax
+rol bx,1
+jnc find
+mov cx,16
+sub cx,ax
+show:mov dl,bl
+and dl,1
+add dl,30h
+mov ah,02h
+int 21h
+rol bx,1
+loop show
+ret
+display endp
+huanhang proc near
+mov ah,02h
+mov dl,0ah
+int 21h
+mov dl,0dh
+int 21h
+ret
+huanhang endp
+exit proc near
+mov ah,4ch
+int 21h
+ret
+exit endp
+code ends
+end main
+
