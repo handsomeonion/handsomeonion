@@ -1,0 +1,70 @@
+code segment
+assume cs:code
+main proc far
+call input
+call changeline
+call output
+mov ah,4ch
+int 21h
+main endp
+input proc near
+mov bx,0
+mov cx,4
+lop:mov ah,1
+int 21h
+cmp al,39h
+jbe num
+cmp al,5ah
+jbe bc
+sub al,57h
+jmp next
+num:sub al,30h
+jmp next
+bc:sub al,37h
+next:mov ah,0
+xchg ax,bx
+mov dx,16
+mul dx
+xchg ax,bx
+add bx,ax
+loop lop
+ret
+input endp
+changeline proc near
+mov ah,2
+mov dl,0dh
+int 21h
+mov dl,0ah
+int 21h
+ret
+changeline endp
+output proc near
+mov di,0
+mov ax,bx;bx在把初值给ax以后就没用了
+mov cx,10000
+mov dx,0
+continue:
+div cx
+push dx;dx存余数,ax存商
+cmp di,0
+jne show
+find:cmp ax,0
+je do
+inc di
+show:mov ah,2
+add al,30h
+mov dl,al
+int 21h
+do:mov ax,cx
+mov dx,0
+mov bx,10
+div bx
+mov cx,ax
+cmp cx,1
+pop ax
+jae continue
+ret
+output endp
+code ends
+end main
+
