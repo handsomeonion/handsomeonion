@@ -1,0 +1,34 @@
+#include<iostream>
+using namespace std;
+void newcopy(char*nw, char*old);
+void main()
+{
+	char a[100], b[100], *q, *p;
+	cin >> b;
+	q = a;
+	p = b;
+	newcopy(q, p);
+}
+void newcopy(char*nw, char*old)
+{
+	int i = 0, n = 0;
+	while (*(old + i) != '\0')
+	{
+		if (*(old + i) >= 97 && *(old + i) <= 122)
+			*(old + i) = 1;
+		i++;
+	}
+	i = 0;
+	while (*(old + i) != '\0')
+	{
+		
+		if (*(old + i) != 1)
+		{
+			*(nw + n) = *(old + i);
+			n++;
+		}
+		i++;
+	}
+	*(nw + n) = '\0';
+	cout << nw;
+}
